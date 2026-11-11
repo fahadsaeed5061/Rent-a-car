@@ -1,0 +1,137 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  role         String   @default("ADMIN")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Booking {
+  id             String        @id @default(cuid())
+  name           String
+  email          String
+  phone          String
+  pickup         String
+  dropoff        String
+  pickupAt       DateTime
+  vehicle        String
+  passengers     Int
+  serviceType    String
+  notes          String?
+  status         BookingStatus @default(PENDING)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([status, pickupAt])
+  @@index([createdAt])
+}
+
+model Vehicle {
+  id             String   @id @default(cuid())
+  name           String
+  slug           String   @unique
+  category       String
+  passengers     Int
+  luggage        Int?
+  description    String   @db.Text
+  features       String[]
+  image          String
+  active         Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Service {
+  id             String   @id @default(cuid())
+  title          String
+  slug           String   @unique
+  description    String   @db.Text
+  image          String
+  active         Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Airport {
+  id             String   @id @default(cuid())
+  code           String   @unique
+  name           String
+  description    String   @db.Text
+  image          String
+  active         Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model ServiceArea {
+  id             String   @id @default(cuid())
+  name           String
+  slug           String   @unique
+  region         String
+  description    String   @db.Text
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model BlogCategory {
+  id        String     @id @default(cuid())
+  name      String     @unique
+  slug      String     @unique
+  posts     BlogPost[]
+  createdAt DateTime   @default(now())
+}
+
+model BlogPost {
+  id             String        @id @default(cuid())
+  title          String
+  slug           String        @unique
+  excerpt        String        @db.Text
+  content        String        @db.Text
+  image          String
+  author         String        @default("Maison Motor Editorial")
+  publishedAt    DateTime      @default(now())
+  published      Boolean       @default(false)
+  categoryId     String
+  category       BlogCategory  @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([published, publishedAt])
+}
+
+model Event {
+  id             String   @id @default(cuid())
+  title          String
+  slug           String   @unique
+  description    String   @db.Text
+  image          String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model ContactInquiry {
+  id             String   @id @default(cuid())
+  name           String
+  email          String
+  phone          String?
+  message        String   @db.Text
+  resolved       Boolean  @default(false)
+  createdAt      DateTime @default(now())
+}

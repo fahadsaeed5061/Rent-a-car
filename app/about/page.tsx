@@ -1,0 +1,12 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { MotionReveal } from "@/components/motion-reveal";
+import { OptimizedImage } from "@/components/optimized-image";
+import { image } from "@/lib/content";
+
+export const metadata: Metadata = { title: "About Maison Motor | Chicago Chauffeur Service", description: "Learn about the Maison Motor approach to considered, personal chauffeur transportation in Chicago.", alternates: { canonical: "/about" } };
+
+export default function AboutPage() {
+  return <><section className="page-hero" style={{ "--page-image": `url(${image("photo-1449965408869-eaa3f722e40d", 1800)})` } as React.CSSProperties}><div className="page-hero-content"><span className="eyebrow">A little about us</span><h1>Driven by<br />the details.</h1><p>Personal service, thoughtfully delivered. That’s the Maison Motor way.</p></div></section><section className="section"><MotionReveal><div className="story-layout"><OptimizedImage className="story-image" src={image("photo-1449965408869-eaa3f722e40d")} alt="A chauffeur opening the door to a luxury vehicle" /><div className="story-copy"><span className="eyebrow">Our approach</span><h2>More than the ride.</h2><p>We believe the journey should feel as good as the destination. Maison Motor was imagined around a simple idea: bring personal attention and quiet confidence to every mile.</p><p>From a carefully prepared vehicle to a clear, warm welcome, the details matter. Our professional chauffeurs help you move through Chicago with care, discretion, and time to settle in.</p><p>We serve travelers, local families, and businesses across Chicago and the surrounding region—one considered journey at a time.</p><Link className="text-link" href="/book">Get to know us on the road <ArrowRight size={15} /></Link></div></div></MotionReveal><div className="story-values">{[["Considered comfort", "A clean, carefully maintained vehicle and a calm, comfortable cabin."], ["Professional care", "Thoughtful, courteous chauffeurs who respect your time and privacy."], ["Clear communication", "Straightforward coordination, from the first request to your destination."]].map(([title, text]) => <article className="value-card" key={title}><h3>{title}</h3><p>{text}</p></article>)}</div></section><section className="cta-band"><div><span className="eyebrow">We’d be glad to meet you</span><h2>Let’s make your next ride easier.</h2></div><Link href="/book" className="button">Plan your ride <ArrowRight size={15} /></Link></section></>;
+}
